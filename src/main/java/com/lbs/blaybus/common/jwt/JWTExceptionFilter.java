@@ -1,4 +1,4 @@
-package com.lbs.blaybus.common;
+package com.lbs.blaybus.common.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;

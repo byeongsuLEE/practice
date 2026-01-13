@@ -5,4 +5,6 @@ import com.lbs.blaybus.user.domain.User;
 public interface UserService {
 
     User getUser(Long userId);
+
+    User joinUser(User request);
 }
