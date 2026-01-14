@@ -1,10 +1,10 @@
-package com.lbs.blaybus.user.serviceimpl;
+package com.lbs.blaybus.user.service;
 
 import com.lbs.blaybus.common.exception.UserException;
 import com.lbs.blaybus.common.response.ErrorCode;
 import com.lbs.blaybus.user.domain.User;
 import com.lbs.blaybus.user.entity.UserEntity;
-import com.lbs.blaybus.user.service.UserService;
+import com.lbs.blaybus.user.repository.JPARepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    JPARepository jpaRepository;
+    private final JPARepository jpaRepository;
     @Override
     public User getUser(Long userId) {
         return jpaRepository.findById(userId)

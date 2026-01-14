@@ -22,10 +22,10 @@ public class User {
     private String email;
     private String name;
     private String phone;
-    LocalDateTime createDateTime;
-    LocalDateTime changeDateTime;
-    String createBy ;
-    String changeBy;
+    private LocalDateTime createDateTime;
+    private LocalDateTime changeDateTime;
+    private String createBy ;
+    private String changeBy;
 
     public UserResponseDto mapToDto() {
         return UserResponseDto.builder()
