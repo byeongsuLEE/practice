@@ -1,5 +1,10 @@
 package com.lbs.blaybus.user.service;
 
+import com.lbs.blaybus.user.domain.User;
+
 public interface UserService {
-    // TODO: Add service methods
+
+    User getUser(Long userId);
+
+    User joinUser(User request);
 }

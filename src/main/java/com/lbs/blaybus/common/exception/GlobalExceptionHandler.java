@@ -22,6 +22,16 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ApiResponse> handleUserException(final UserException e) {
+        log.error("UserException: {}", e.getMessage());
+        ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ApiResponse.error(errorCode.getStatus(), errorCode.getMessage(), errorCode));
+    }
+
+
     /**
      * 커스텀 비즈니스 예외 처리
      */
