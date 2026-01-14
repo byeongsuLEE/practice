@@ -1,10 +1,11 @@
 package com.lbs.blaybus.user.service;
 
-import com.lbs.blaybus.user.domain.User;
+import com.lbs.blaybus.user.dto.request.JoinUserRequestDto;
+import com.lbs.blaybus.user.dto.response.UserResponseDto;
 
 public interface UserService {
 
-    User getUser(Long userId);
+    UserResponseDto getUser(Long userId);
 
-    User joinUser(User request);
+    UserResponseDto joinUser(JoinUserRequestDto request);
 }

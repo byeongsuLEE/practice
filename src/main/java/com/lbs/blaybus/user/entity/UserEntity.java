@@ -1,7 +1,8 @@
 package com.lbs.blaybus.user.entity;
 
 import com.lbs.blaybus.common.jpa.BaseEntity;
-import com.lbs.blaybus.user.domain.User;
+import com.lbs.blaybus.user.dto.request.JoinUserRequestDto;
+import com.lbs.blaybus.user.dto.response.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,25 +42,26 @@ public class UserEntity extends BaseEntity {
         this.phone = phone;
     }
 
-    public static UserEntity createUserEntity(User user) {
+    public static UserEntity from(JoinUserRequestDto dto) {
         return UserEntity.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .phone(user.getPhone())
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .phone(dto.getPhone())
                 .build();
     }
-    public User mapToDomain(){
-        return User.builder()
+
+    public UserResponseDto toResponseDto(){
+        return UserResponseDto.builder()
                 .id(this.id)
                 .email(this.email)
                 .name(this.name)
                 .phone(this.phone)
                 .createDateTime(this.getCreateDateTime())
                 .changeDateTime(this.getChangeDateTime())
-                // .changeBy()
-                // .createBy()
+                // 나중에 추가
+//                .createBy(this.getgetCreateBy())
+//                .changeBy(this.getChangeBy())
                 .build();
-
     }
 
 
