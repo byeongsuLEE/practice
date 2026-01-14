@@ -1,6 +1,5 @@
 package com.lbs.blaybus.auth.controller;
 
-import com.lbs.blaybus.auth.dto.request.TokenReissueRequestDto;
 import com.lbs.blaybus.auth.dto.response.TokenResponseDto;
 import com.lbs.blaybus.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * 작성자  : lbs
@@ -23,7 +22,7 @@ public interface AuthSwaggerApi {
 
     @Operation(
             summary = "JWT 토큰 재발급",
-            description = "유효한 Refresh Token으로 새로운 Access Token을 발급합니다. Refresh Token은 만료되지 않았는지 검증 후, 새로운 Access Token만 반환합니다."
+            description = "Authorization 헤더에 담긴 유효한 Refresh Token으로 새로운 Access Token을 발급합니다. Refresh Token은 만료되지 않았는지 검증 후, 새로운 Access Token만 반환합니다."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -41,7 +40,7 @@ public interface AuthSwaggerApi {
             )
     })
     ResponseEntity<ApiResponse<TokenResponseDto>> reissueToken(
-            @Parameter(description = "토큰 재발급 요청 정보", required = true)
-            @RequestBody TokenReissueRequestDto request
+            @Parameter(description = "Refresh Token (형식: Bearer {token})", required = true, example = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+            @RequestHeader(value = "Authorization") String authorization
     );
 }

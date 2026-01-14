@@ -1,6 +1,5 @@
 package com.lbs.blaybus.auth.service;
 
-import com.lbs.blaybus.auth.dto.request.TokenReissueRequestDto;
 import com.lbs.blaybus.auth.dto.response.TokenResponseDto;
 import com.lbs.blaybus.auth.entity.RefreshTokenEntity;
 import com.lbs.blaybus.auth.repository.RefreshTokenRepository;
@@ -38,9 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional(readOnly = true)
-    public TokenResponseDto reissueToken(TokenReissueRequestDto request) {
-        String refreshToken = request.getRefreshToken();
-
+    public TokenResponseDto reissueToken(String refreshToken) {
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new UserException(ErrorCode.UNAUTHORIZED, "유효하지 않은 Refresh Token입니다.");
         }

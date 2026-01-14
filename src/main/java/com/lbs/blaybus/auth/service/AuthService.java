@@ -1,6 +1,5 @@
 package com.lbs.blaybus.auth.service;
 
-import com.lbs.blaybus.auth.dto.request.TokenReissueRequestDto;
 import com.lbs.blaybus.auth.dto.response.TokenResponseDto;
 
 /**
@@ -11,7 +10,7 @@ import com.lbs.blaybus.auth.dto.response.TokenResponseDto;
 
 public interface AuthService {
 
-    TokenResponseDto reissueToken(TokenReissueRequestDto request);
+    TokenResponseDto reissueToken(String refreshToken);
 
     TokenResponseDto generateToken(String email, String name);
 
