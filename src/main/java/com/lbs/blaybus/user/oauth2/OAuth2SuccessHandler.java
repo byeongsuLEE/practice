@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -33,6 +34,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final UserRepository userRepository;
     @Value("${frontend.success.url}")
     private String frontendUrl;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -56,6 +58,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     tokenResponse.getAccessToken(),
                     tokenResponse.getRefreshToken());
 
+
+            redisTemplate.opsForValue().set("user:"+email, tokenResponse.getRefreshToken());
             response.sendRedirect(redirectUrl);
         }else{
             response.sendRedirect(frontendUrl + "/signup?email=" + email + "&name=" + name);
