@@ -1,6 +1,5 @@
 package com.lbs.blaybus.user.dto.request;
 
-import com.lbs.blaybus.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -22,12 +21,4 @@ public class JoinUserRequestDto {
 
     @Schema(description = "전화번호", example = "010-1234-5678", requiredMode = Schema.RequiredMode.REQUIRED)
     private String phone;
-
-    public User mapToDomain(JoinUserRequestDto request) {
-        return User.builder()
-                .email(request.email)
-                .name(request.name)
-                .phone(request.phone)
-                .build();
-    }
 }
