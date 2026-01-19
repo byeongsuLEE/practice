@@ -1,7 +1,7 @@
 package com.lbs.blaybus.user.entity;
 
 import com.lbs.blaybus.common.jpa.BaseEntity;
-import com.lbs.blaybus.user.dto.request.JoinUserRequestDto;
+import com.lbs.blaybus.user.dto.request.UserJoinRequestDto;
 import com.lbs.blaybus.user.dto.response.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,14 +36,14 @@ public class UserEntity extends BaseEntity {
     private String phone;
 
     @Builder
-    private UserEntity(String email, String name, String phone) {
+    private User(String email, String name, String phone) {
         this.email = email;
         this.name = name;
         this.phone = phone;
     }
 
-    public static UserEntity from(JoinUserRequestDto dto) {
-        return UserEntity.builder()
+    public static User from(UserJoinRequestDto dto) {
+        return User.builder()
                 .email(dto.getEmail())
                 .name(dto.getName())
                 .phone(dto.getPhone())

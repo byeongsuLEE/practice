@@ -1,7 +1,7 @@
 package com.lbs.blaybus.user.controller;
 
 import com.lbs.blaybus.common.response.ApiResponse;
-import com.lbs.blaybus.user.dto.request.JoinUserRequestDto;
+import com.lbs.blaybus.user.dto.request.UserJoinRequestDto;
 import com.lbs.blaybus.user.dto.response.UserResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -70,6 +70,6 @@ public interface UserSwaggerApi {
     })
     ResponseEntity<ApiResponse<UserResponseDto>> joinUser(
             @Parameter(description = "가입할 유저 정보", required = true)
-            @RequestBody JoinUserRequestDto request
+            @RequestBody UserJoinRequestDto request
     );
 }

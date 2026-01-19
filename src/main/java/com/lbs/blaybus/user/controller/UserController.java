@@ -1,7 +1,7 @@
 package com.lbs.blaybus.user.controller;
 
 import com.lbs.blaybus.common.response.ApiResponse;
-import com.lbs.blaybus.user.dto.request.JoinUserRequestDto;
+import com.lbs.blaybus.user.dto.request.UserJoinRequestDto;
 import com.lbs.blaybus.user.dto.response.UserResponseDto;
 import com.lbs.blaybus.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class UserController implements UserSwaggerApi{
 
     @Override
     @PostMapping("/join")
-    public ResponseEntity<ApiResponse<UserResponseDto>> joinUser(@RequestBody JoinUserRequestDto request) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> joinUser(@RequestBody UserJoinRequestDto request) {
         UserResponseDto userResponseDto = userservice.joinUser(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(HttpStatus.CREATED, userResponseDto));

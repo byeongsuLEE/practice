@@ -7,7 +7,7 @@ import com.lbs.blaybus.common.exception.UserException;
 import com.lbs.blaybus.common.jwt.JwtProperties;
 import com.lbs.blaybus.common.jwt.JwtTokenProvider;
 import com.lbs.blaybus.common.response.ErrorCode;
-import com.lbs.blaybus.user.entity.UserEntity;
+import com.lbs.blaybus.user.entity.User;
 import com.lbs.blaybus.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
         String email = claims.getSubject();
 
-        UserEntity user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
         String newAccessToken = jwtTokenProvider.generateAccessToken(
