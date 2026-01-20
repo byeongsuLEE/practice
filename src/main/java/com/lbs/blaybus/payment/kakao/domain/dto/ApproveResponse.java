@@ -1,9 +1,15 @@
 package com.lbs.blaybus.payment.kakao.domain.dto;
 
+import com.lbs.blaybus.payment.domain.Amount;
+import com.lbs.blaybus.payment.domain.Card;
+import com.lbs.blaybus.payment.domain.enums.PaymentMethod;
+import com.lbs.blaybus.payment.kakao.domain.PaymentApproval;
 import lombok.Getter;
 
+import java.util.Optional;
+
 @Getter
-public class ApproveResponse {
+public class ApproveResponse implements PaymentApproval {
     private String aid; // 요청 고유 번호
     private String tid; // 결제 고유 번호
     private String cid; // 가맹점 코드
@@ -20,6 +26,39 @@ public class ApproveResponse {
     private String created_at; // 결제 요청 시간
     private String approved_at; // 결제 승인 시간
     private String payload; // 결제 승인 요청에 대해 저장 값, 요청 시 전달 내용
+
+    @Override
+    public String getOrderId() {
+        return partner_order_id;
+    }
+
+    @Override
+    public String getProductName() {
+        return item_name;
+    }
+
+    @Override
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public String getPaymentMethod() {
+        return payment_method_type;
+    }
+
+    @Override
+    public com.lbs.blaybus.payment.domain.Amount toAmount() {
+        return com.lbs.blaybus.payment.domain.Amount.createKakao(this);
+    }
+
+    @Override
+    public Card toCardInfo() {
+        if (this.getPaymentMethod().equals(PaymentMethod.CARD.name())) {
+            return Card.createKakao(this);
+        }
+        return null;
+    }
 
     @Getter
     public static class Amount {

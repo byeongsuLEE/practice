@@ -5,6 +5,7 @@ import com.lbs.blaybus.user.dto.request.UserJoinRequestDto;
 import com.lbs.blaybus.user.dto.response.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User extends BaseEntity {
 
     @Id

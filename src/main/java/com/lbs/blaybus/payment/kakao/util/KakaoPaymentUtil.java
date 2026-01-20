@@ -1,7 +1,10 @@
 package com.lbs.blaybus.payment.kakao.util;
 
+import com.lbs.blaybus.order.domain.Orders;
 import com.lbs.blaybus.payment.domain.dto.PaymentRequest;
-import com.lbs.blaybus.payment.kakao.domain.dto.ReadyResponse;
+import com.lbs.blaybus.payment.kakao.domain.dto.KakaoApproveRequest;
+import com.lbs.blaybus.product.entity.Product;
+import com.lbs.blaybus.user.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class KakaoPaymentUtil<T> {
-    private final String SUCCESS = "/payment/success?memberId=%s";
-    private final String FAILURE = "/payment/fail?memberId=%s&productName=%s&quantity=%s";
-    private final String CANCEL = "/payment/fail?memberId=%s&productName=%s&quantity=%s";
+public class KakaoPaymentUtil {
+    private final String SUCCESS = "/api/payment/kakao/approve?orderId=%s&userId=%s";
+    private final String FAILURE = "/api/payment/kakao/fail?orderId=%s&userId=%s";
+    private final String CANCEL = "/api/payment/kakao/fail?orderId=%s&userId=%s";
 
     @Value("${kakao.payment.cid}")
     private String CID;
@@ -29,42 +32,41 @@ public class KakaoPaymentUtil<T> {
     @Value("${kakao.payment.request-url}")
     private String requestUrl;
 
-    public ReadyResponse sendRequest(String requestType, Map<String, Object> parameters) {
+    public <T> T sendRequest(String requestType, Map<String, Object> parameters, Class<T> classType) {
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(parameters, getHeaders());
         return new RestTemplate().postForObject(
                 host + requestType,
                 requestEntity,
-                ReadyResponse.class);
+                classType);
     }
 
-    public Map<String, Object> getReadyParameters(PaymentRequest paymentRequest, Long memberId,
-                                                          String partnerOrderId) {
+    public Map<String, Object> getReadyParameters(PaymentRequest paymentRequest, Long userId,
+                                                  String orderId, Product product) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("cid", CID);
-        parameters.put("partner_order_id", partnerOrderId);
-        parameters.put("partner_user_id", memberId.toString());
-        parameters.put("item_name", "테스트 상품"); // TODO : 엔티티 생성 후 변경
+        parameters.put("partner_order_id", orderId);
+        parameters.put("partner_user_id", userId.toString());
+        parameters.put("item_name", product.getName());
         parameters.put("quantity", paymentRequest.quantity());
-        parameters.put("total_amount", paymentRequest.total());
+        parameters.put("total_amount", (product.getPrice() * paymentRequest.quantity()));
         parameters.put("vat_amount", 0);
         parameters.put("tax_free_amount", 0);
-        parameters.put("approval_url", requestUrl + String.format(SUCCESS, memberId));
+        parameters.put("approval_url", requestUrl + String.format(SUCCESS, orderId, userId));
         parameters.put("cancel_url", requestUrl
-                + String.format(CANCEL, memberId, "테스트 상품", paymentRequest.quantity()));
+                + String.format(CANCEL, orderId, userId));
         parameters.put("fail_url", requestUrl
-                + String.format(FAILURE, memberId, "테스트 상품", paymentRequest.quantity()));
+                + String.format(FAILURE, orderId, userId));
         return parameters;
     }
 
 
-    public Map<String, Object> getApproveParameters(Long memberId, String orderId, String transactionId,
-                                                            String pgToken) {
+    public Map<String, Object> getApproveParameters(KakaoApproveRequest request, Orders order) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("cid", CID);
-        parameters.put("tid", transactionId);
-        parameters.put("partner_order_id", orderId);
-        parameters.put("partner_user_id", memberId.toString());
-        parameters.put("pg_token", pgToken);
+        parameters.put("tid", order.getTid());
+        parameters.put("partner_order_id", request.orderId());
+        parameters.put("partner_user_id", request.userId());
+        parameters.put("pg_token", request.pgToken());
         return parameters;
     }
 
