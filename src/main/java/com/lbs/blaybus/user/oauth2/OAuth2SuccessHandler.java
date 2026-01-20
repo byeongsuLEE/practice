@@ -2,7 +2,7 @@ package com.lbs.blaybus.user.oauth2;
 
 import com.lbs.blaybus.auth.dto.response.TokenResponseDto;
 import com.lbs.blaybus.auth.service.AuthService;
-import com.lbs.blaybus.user.entity.UserEntity;
+import com.lbs.blaybus.user.entity.User;
 import com.lbs.blaybus.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
 
-        Optional<UserEntity> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
 
         if(user.isPresent()) {
             TokenResponseDto tokenResponse = authService.generateToken(email, name);

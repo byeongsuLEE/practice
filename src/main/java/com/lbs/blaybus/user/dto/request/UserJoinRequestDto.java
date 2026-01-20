@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Schema(description = "유저 가입 요청 DTO")
 @Getter
-public class JoinUserRequestDto {
+public class UserJoinRequestDto {
 
     @Schema(description = "이메일 주소", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
