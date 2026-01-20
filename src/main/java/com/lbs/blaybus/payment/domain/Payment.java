@@ -1,27 +1,20 @@
 package com.lbs.blaybus.payment.domain;
 
+import com.lbs.blaybus.payment.domain.dto.ApproveResponse;
 import com.lbs.blaybus.payment.domain.enums.PaymentMethod;
-import com.lbs.blaybus.payment.kakao.domain.dto.ApproveResponse;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -51,25 +44,24 @@ public class Payment {
     private Card cardInfo;
 
     @Builder
-    private Payment(ApproveResponse approveResponse) {
+    private Payment(ApproveResponse approveResponse, Long userId) {
         this.tid = approveResponse.getTid();
         this.orderId = approveResponse.getOrderId();
         this.productName = approveResponse.getProductName();
         this.quantity = approveResponse.getQuantity();
-        this.requestedAt = approveResponse.getApproved_at();
-        this.approvedAt = approveResponse.getApproved_at();
+        this.requestedAt = approveResponse.getApprovedAt();
+        this.approvedAt = approveResponse.getApprovedAt();
         this.payload = approveResponse.getPayload();
-        this.memberId = 100L;
-        this.paymentMethodType = PaymentMethod.fromString(approveResponse.getPayment_method_type());
+        this.memberId = userId;
+        this.paymentMethodType = PaymentMethod.fromString(approveResponse.getPaymentMethod());
         this.amount = approveResponse.toAmount();
         this.cardInfo = approveResponse.toCardInfo();
     }
 
-    public static Payment of(ApproveResponse approveResponse) {
+    public static Payment of(ApproveResponse approveResponse, Long userId) {
         return Payment.builder()
                 .approveResponse(approveResponse)
+                .userId(userId)
                 .build();
     }
-
 }
-

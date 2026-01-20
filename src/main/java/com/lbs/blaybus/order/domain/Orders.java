@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -27,9 +28,12 @@ public class Orders extends BaseEntity {
 
     private String orderId;
 
+    @Setter
     private String tid;
 
     private Integer quantity;
+
+    private Integer amount;
 
     private String provider;
 
@@ -39,11 +43,12 @@ public class Orders extends BaseEntity {
 
     @Builder
     private Orders(OrderStatus status, String orderId, String tid, Integer quantity,
-                   String provider, Long userId, String productName) {
+                   Integer amount, String provider, Long userId, String productName) {
         this.status = status;
         this.tid = tid;
         this.orderId = orderId;
         this.quantity = quantity;
+        this.amount = amount;
         this.provider = provider;
         this.userId = userId;
         this.productName = productName;
@@ -55,6 +60,7 @@ public class Orders extends BaseEntity {
                 .orderId(dto.orderId())
                 .tid(dto.tid())
                 .quantity(dto.quantity())
+                .amount(dto.amount())
                 .provider(dto.provider())
                 .userId(dto.userId())
                 .productName(dto.productName())

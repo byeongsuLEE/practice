@@ -1,6 +1,5 @@
 package com.lbs.blaybus.payment.domain;
 
-import com.lbs.blaybus.payment.kakao.domain.dto.ApproveResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,17 +30,5 @@ public class Amount {
         this.vat = vat;
         this.point = point;
         this.discount = discount;
-    }
-
-    public static Amount createKakao(ApproveResponse approveResponse) {
-        ApproveResponse.Amount amount = approveResponse.getAmount();
-
-        return Amount.builder()
-                .total(amount.getTotal())
-                .taxFree(amount.getTax_free())
-                .vat(amount.getVat())
-                .point(amount.getPoint())
-                .discount(amount.getDiscount())
-                .build();
     }
 }

@@ -1,15 +1,11 @@
 package com.lbs.blaybus.payment.kakao.domain.dto;
 
-import com.lbs.blaybus.payment.domain.Amount;
 import com.lbs.blaybus.payment.domain.Card;
-import com.lbs.blaybus.payment.domain.enums.PaymentMethod;
-import com.lbs.blaybus.payment.kakao.domain.PaymentApproval;
+import com.lbs.blaybus.payment.domain.dto.ApproveResponse;
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
-public class ApproveResponse implements PaymentApproval {
+public class KakaoApproveResponse extends ApproveResponse {
     private String aid; // 요청 고유 번호
     private String tid; // 결제 고유 번호
     private String cid; // 가맹점 코드
@@ -33,6 +29,11 @@ public class ApproveResponse implements PaymentApproval {
     }
 
     @Override
+    public String getTid() {
+        return tid;
+    }
+
+    @Override
     public String getProductName() {
         return item_name;
     }
@@ -43,21 +44,51 @@ public class ApproveResponse implements PaymentApproval {
     }
 
     @Override
+    public String getApprovedAt() {
+        return approved_at;
+    }
+
+    @Override
+    public String getPayload() {
+        return payload;
+    }
+
+    @Override
     public String getPaymentMethod() {
         return payment_method_type;
     }
 
     @Override
     public com.lbs.blaybus.payment.domain.Amount toAmount() {
-        return com.lbs.blaybus.payment.domain.Amount.createKakao(this);
+        if (this.amount == null)
+            return null;
+        return com.lbs.blaybus.payment.domain.Amount.builder()
+                .total(this.amount.total)
+                .taxFree(this.amount.tax_free)
+                .vat(this.amount.vat)
+                .point(this.amount.point)
+                .discount(this.amount.discount)
+                .build();
     }
 
     @Override
     public Card toCardInfo() {
-        if (this.getPaymentMethod().equals(PaymentMethod.CARD.name())) {
-            return Card.createKakao(this);
-        }
-        return null;
+        if (this.card_info == null)
+            return null;
+        return Card.builder()
+                .purchaseCorp(this.card_info.kakaopay_purchase_corp)
+                .purchaseCorpCode(this.card_info.kakaopay_purchase_corp_code)
+                .issuerCorp(this.card_info.kakaopay_issuer_corp)
+                .issuerCorpCode(this.card_info.kakaopay_issuer_corp_code)
+                .bin(this.card_info.bin)
+                .cardType(this.card_info.card_type)
+                .installMonth(this.card_info.install_month)
+                .approvedId(this.card_info.approved_id)
+                .cardMid(this.card_info.card_mid)
+                .interestFreeInstall(this.card_info.interest_free_install)
+                .installmentType(this.card_info.installment_type)
+                .cardItemCode(this.card_info.card_item_code)
+                .build();
     }
 
     @Getter

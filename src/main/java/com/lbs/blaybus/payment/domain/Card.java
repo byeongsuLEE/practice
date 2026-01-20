@@ -1,6 +1,5 @@
 package com.lbs.blaybus.payment.domain;
 
-import com.lbs.blaybus.payment.kakao.domain.dto.ApproveResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,24 +35,20 @@ public class Card {
     private Payment Payment;
 
     @Builder
-    private Card(ApproveResponse approveResponse) {
-        this.approvedId = approveResponse.getCard_info().getApproved_id();
-        this.bin = approveResponse.getCard_info().getBin();
-        this.cardMid = approveResponse.getCard_info().getCard_mid();
-        this.cardType = approveResponse.getCard_info().getCard_type();
-        this.installMonth = approveResponse.getCard_info().getInstall_month();
-        this.cardItemCode = approveResponse.getCard_info().getCard_item_code();
-        this.installmentType = approveResponse.getCard_info().getInstallment_type();
-        this.interestFreeInstall = approveResponse.getCard_info().getInterest_free_install();
-        this.purchaseCorp = approveResponse.getCard_info().getKakaopay_purchase_corp();
-        this.purchaseCorpCode = approveResponse.getCard_info().getKakaopay_purchase_corp_code();
-        this.issuerCorp = approveResponse.getCard_info().getKakaopay_issuer_corp();
-        this.issuerCorpCode = approveResponse.getCard_info().getKakaopay_issuer_corp_code();
-    }
-
-    public static Card createKakao(ApproveResponse approveResponse) {
-        return Card.builder()
-                .approveResponse(approveResponse)
-                .build();
+    private Card(String purchaseCorp, String purchaseCorpCode, String issuerCorp, String issuerCorpCode,
+            String bin, String cardType, String installMonth, String approvedId, String cardMid,
+            String interestFreeInstall, String installmentType, String cardItemCode) {
+        this.purchaseCorp = purchaseCorp;
+        this.purchaseCorpCode = purchaseCorpCode;
+        this.issuerCorp = issuerCorp;
+        this.issuerCorpCode = issuerCorpCode;
+        this.bin = bin;
+        this.cardType = cardType;
+        this.installMonth = installMonth;
+        this.approvedId = approvedId;
+        this.cardMid = cardMid;
+        this.interestFreeInstall = interestFreeInstall;
+        this.installmentType = installmentType;
+        this.cardItemCode = cardItemCode;
     }
 }

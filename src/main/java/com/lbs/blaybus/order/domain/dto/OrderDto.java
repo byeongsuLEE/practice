@@ -8,12 +8,13 @@ public record OrderDto(OrderStatus status,
                        String tid,
                        String orderId,
                        Integer quantity,
+                       Integer amount,
                        String provider,
                        Long userId,
                        String productName) {
 
     public static OrderDto from(OrderStatus status, String tid, String orderId, Integer quantity,
-                       String provider, Long userId, String productName) {
-        return new OrderDto(status, tid, orderId, quantity, provider, userId, productName);
+                       Integer amount, String provider, Long userId, String productName) {
+        return new OrderDto(status, tid, orderId, quantity, amount, provider, userId, productName);
     }
 }
