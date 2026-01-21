@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 })
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@AllArgsConstructor
 public class User extends BaseEntity {
 
     @Id
